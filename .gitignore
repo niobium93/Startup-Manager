@@ -1,3 +1,4 @@
 *.suo
+*.bat
 Startup Manager/bin/*
 Startup Manager/obj/*
