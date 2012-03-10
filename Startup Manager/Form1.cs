@@ -35,6 +35,10 @@ namespace Startup_Manager
                 foreach (string key in subKeys)
                     CreateRow(key, machineRunKey.GetValue(key).ToString(), "Admin");
             }
+
+            addButton.Enabled = true;
+            removeButton.Enabled = true;
+            openLocButton.Enabled = true;
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
@@ -58,14 +62,29 @@ namespace Startup_Manager
                 WindowsPrincipal principal = new WindowsPrincipal(user);
                 isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
-            catch (UnauthorizedAccessException ex)
+            catch (UnauthorizedAccessException)
             {
                 isAdmin = false;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 isAdmin = false;
             }
+        }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void openLocButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
