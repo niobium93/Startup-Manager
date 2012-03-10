@@ -19,14 +19,21 @@ namespace Startup_Manager
             userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
             subKeys = userRunKey.GetValueNames();
             foreach (string key in subKeys)
-                CreateRow(key, userRunKey.GetValue(key).ToString());
+                CreateRow(key, userRunKey.GetValue(key).ToString(), "User");
 
             if (isAdmin)
             {
+                if (IntPtr.Size == 8)
+                {
+                    machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run");
+                    subKeys = machineRunKey.GetValueNames();
+                    foreach (string key in subKeys)
+                        CreateRow(key, machineRunKey.GetValue(key).ToString(), "Admin", "Wow6432");
+                }
                 machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
                 subKeys = machineRunKey.GetValueNames();
                 foreach (string key in subKeys)
-                    CreateRow(key, machineRunKey.GetValue(key).ToString());
+                    CreateRow(key, machineRunKey.GetValue(key).ToString(), "Admin");
             }
         }
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -34,10 +41,12 @@ namespace Startup_Manager
             userRunKey.Close();
             if (isAdmin) machineRunKey.Close();
         }
-        private void CreateRow(string name, string location)
+        private void CreateRow(string name, string location, string privs, string wow = "")
         {
             ListViewItem item = new ListViewItem(name);
             item.SubItems.Add(location);
+            item.SubItems.Add(privs);
+            item.SubItems.Add(wow);
             listView1.Items.Add(item);
         }
         private void IsUserAdministrator()

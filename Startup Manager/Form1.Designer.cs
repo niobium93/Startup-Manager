@@ -31,6 +31,8 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.nameColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.locColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.PrivColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.wowColHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
             // listView1
@@ -40,12 +42,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.nameColHeader,
-            this.locColHeader});
+            this.locColHeader,
+            this.PrivColHeader,
+            this.wowColHeader});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 12);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(483, 335);
+            this.listView1.Size = new System.Drawing.Size(570, 381);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -60,11 +64,20 @@
             this.locColHeader.Text = "Location";
             this.locColHeader.Width = 300;
             // 
+            // PrivColHeader
+            // 
+            this.PrivColHeader.Text = "Privileges";
+            // 
+            // wowColHeader
+            // 
+            this.wowColHeader.Text = "";
+            this.wowColHeader.Width = 70;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 359);
+            this.ClientSize = new System.Drawing.Size(594, 405);
             this.Controls.Add(this.listView1);
             this.Name = "Form1";
             this.Text = "Startup Manager";
@@ -78,6 +91,8 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader nameColHeader;
         private System.Windows.Forms.ColumnHeader locColHeader;
+        private System.Windows.Forms.ColumnHeader PrivColHeader;
+        private System.Windows.Forms.ColumnHeader wowColHeader;
 
 
     }
