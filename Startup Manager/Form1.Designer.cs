@@ -68,6 +68,7 @@
             this.Controls.Add(this.listView1);
             this.Name = "Form1";
             this.Text = "Startup Manager";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.ResumeLayout(false);
 
         }
