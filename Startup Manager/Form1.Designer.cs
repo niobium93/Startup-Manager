@@ -71,7 +71,8 @@
             // 
             // PrivColHeader
             // 
-            this.PrivColHeader.Text = "Privileges";
+            this.PrivColHeader.Text = "Startup for";
+            this.PrivColHeader.Width = 75;
             // 
             // wowColHeader
             // 

@@ -19,7 +19,7 @@ namespace Startup_Manager
             userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
             subKeys = userRunKey.GetValueNames();
             foreach (string key in subKeys)
-                CreateRow(key, userRunKey.GetValue(key).ToString(), "User");
+                CreateRow(key, userRunKey.GetValue(key).ToString(), "Current User");
 
             if (isAdmin)
             {
@@ -28,23 +28,26 @@ namespace Startup_Manager
                     machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run");
                     subKeys = machineRunKey.GetValueNames();
                     foreach (string key in subKeys)
-                        CreateRow(key, machineRunKey.GetValue(key).ToString(), "Admin", "Wow6432");
+                        CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users", "Wow6432");
+                    machineRunKey.Close();
                 }
                 machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
                 subKeys = machineRunKey.GetValueNames();
                 foreach (string key in subKeys)
-                    CreateRow(key, machineRunKey.GetValue(key).ToString(), "Admin");
+                    CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users");
             }
 
             addButton.Enabled = true;
             removeButton.Enabled = true;
             openLocButton.Enabled = true;
         }
+
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
             userRunKey.Close();
             if (isAdmin) machineRunKey.Close();
         }
+
         private void CreateRow(string name, string location, string privs, string wow = "")
         {
             ListViewItem item = new ListViewItem(name);
@@ -53,6 +56,7 @@ namespace Startup_Manager
             item.SubItems.Add(wow);
             listView1.Items.Add(item);
         }
+
         private void IsUserAdministrator()
         {
             try
@@ -74,7 +78,14 @@ namespace Startup_Manager
 
         private void addButton_Click(object sender, EventArgs e)
         {
-
+            AddForm dialog = new AddForm();
+            if (isAdmin)
+                dialog.isAdmin = true;
+            dialog.ShowDialog();
+            if (dialog.done)
+            {
+                Add(dialog.name, dialog.location, dialog.allUsers);
+            }
         }
 
         private void removeButton_Click(object sender, EventArgs e)
@@ -85,6 +96,19 @@ namespace Startup_Manager
         private void openLocButton_Click(object sender, EventArgs e)
         {
 
+        }
+        private void Add(string name, string location, bool allUsers)
+        {
+            if (allUsers)
+            {
+                machineRunKey.SetValue(name, location);
+                CreateRow(name, location, "All Users");
+            }
+            else
+            {
+                userRunKey.SetValue(name, location);
+                CreateRow(name, location, "Current User");
+            }
         }
     }
 }
