@@ -16,7 +16,7 @@ namespace Startup_Manager
             IsUserAdministrator();
             string[] subKeys;
 
-            userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+            userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             subKeys = userRunKey.GetValueNames();
             foreach (string key in subKeys)
                 CreateRow(key, userRunKey.GetValue(key).ToString(), "Current User");
@@ -25,13 +25,13 @@ namespace Startup_Manager
             {
                 if (IntPtr.Size == 8)
                 {
-                    machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run");
+                    machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                     subKeys = machineRunKey.GetValueNames();
                     foreach (string key in subKeys)
                         CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users", "Wow6432");
                     machineRunKey.Close();
                 }
-                machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run");
+                machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 subKeys = machineRunKey.GetValueNames();
                 foreach (string key in subKeys)
                     CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users");
@@ -78,9 +78,7 @@ namespace Startup_Manager
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            AddForm dialog = new AddForm();
-            if (isAdmin)
-                dialog.isAdmin = true;
+            AddForm dialog = new AddForm(isAdmin);
             dialog.ShowDialog();
             if (dialog.done)
             {

@@ -8,10 +8,9 @@ namespace Startup_Manager
     {
         public string name = "";
         public string location = "";
-        public bool isAdmin = false;
         public bool allUsers = false;
         public bool done = false;
-        public AddForm()
+        public AddForm(bool isAdmin)
         {
             InitializeComponent();
             if (!isAdmin)

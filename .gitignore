@@ -1,4 +1,5 @@
 *.suo
 *.bat
+*.user
 Startup Manager/bin/*
 Startup Manager/obj/*
