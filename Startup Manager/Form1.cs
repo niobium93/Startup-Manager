@@ -28,7 +28,7 @@ namespace Startup_Manager
                     machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                     subKeys = machineRunKey.GetValueNames();
                     foreach (string key in subKeys)
-                        CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users", "Wow6432");
+                        CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users", true);
                     machineRunKey.Close();
                 }
                 machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -48,12 +48,20 @@ namespace Startup_Manager
             if (isAdmin) machineRunKey.Close();
         }
 
-        private void CreateRow(string name, string location, string privs, string wow = "")
+        private void CreateRow(string name, string location, string privs, bool wow = false)
         {
             ListViewItem item = new ListViewItem(name);
             item.SubItems.Add(location);
             item.SubItems.Add(privs);
-            item.SubItems.Add(wow);
+            if (wow) item.SubItems.Add("Wow6432");
+
+            Item myItem;
+            myItem.name = name;
+            myItem.location = location;
+            myItem.privs = privs;
+            myItem.wow = wow;
+            item.Tag = myItem;
+
             listView1.Items.Add(item);
         }
 
@@ -61,7 +69,7 @@ namespace Startup_Manager
         {
             try
             {
-                //get the currently logged in user
+                // Get the currently logged in user
                 WindowsIdentity user = WindowsIdentity.GetCurrent();
                 WindowsPrincipal principal = new WindowsPrincipal(user);
                 isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
@@ -88,12 +96,28 @@ namespace Startup_Manager
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-
+            foreach (ListViewItem item in listView1.SelectedItems)
+            {
+                Item myItem = (Item)item.Tag;
+                if (myItem.privs == "Current User")
+                {
+                    userRunKey.DeleteValue(myItem.name, false);
+                    listView1.Items.Remove(item);
+                }
+                else if (myItem.privs == "All Users")
+                {
+                    machineRunKey.DeleteValue(myItem.name, false);
+                    listView1.Items.Remove(item);
+                }
+            }
         }
 
         private void openLocButton_Click(object sender, EventArgs e)
         {
-
+            foreach (ListViewItem item in listView1.SelectedItems)
+            {
+                MessageBox.Show(item.SubItems[1].ToString()); //STUB
+            }
         }
         private void Add(string name, string location, bool allUsers)
         {

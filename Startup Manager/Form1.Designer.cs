@@ -54,7 +54,7 @@
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(12, 12);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(560, 332);
+            this.listView1.Size = new System.Drawing.Size(590, 332);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -94,7 +94,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(560, 50);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(590, 50);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
             // openLocButton
@@ -105,9 +105,9 @@
             this.openLocButton.Enabled = false;
             this.openLocButton.Image = global::Startup_Manager.Properties.Resources.Open;
             this.openLocButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.openLocButton.Location = new System.Drawing.Point(375, 3);
+            this.openLocButton.Location = new System.Drawing.Point(395, 3);
             this.openLocButton.Name = "openLocButton";
-            this.openLocButton.Size = new System.Drawing.Size(182, 44);
+            this.openLocButton.Size = new System.Drawing.Size(192, 44);
             this.openLocButton.TabIndex = 2;
             this.openLocButton.Text = "Open location";
             this.openLocButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -122,9 +122,9 @@
             this.removeButton.Enabled = false;
             this.removeButton.Image = global::Startup_Manager.Properties.Resources.Remove;
             this.removeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.removeButton.Location = new System.Drawing.Point(189, 3);
+            this.removeButton.Location = new System.Drawing.Point(199, 3);
             this.removeButton.Name = "removeButton";
-            this.removeButton.Size = new System.Drawing.Size(180, 44);
+            this.removeButton.Size = new System.Drawing.Size(190, 44);
             this.removeButton.TabIndex = 1;
             this.removeButton.Text = "Remove";
             this.removeButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -141,7 +141,7 @@
             this.addButton.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.addButton.Location = new System.Drawing.Point(3, 3);
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(180, 44);
+            this.addButton.Size = new System.Drawing.Size(190, 44);
             this.addButton.TabIndex = 0;
             this.addButton.Text = "Add";
             this.addButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
@@ -152,7 +152,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 412);
+            this.ClientSize = new System.Drawing.Size(614, 412);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.listView1);
             this.MinimumSize = new System.Drawing.Size(400, 250);
