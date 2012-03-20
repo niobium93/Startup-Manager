@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.Security.Principal;
+using System.IO;
 using Microsoft.Win32;
 
 namespace Startup_Manager
@@ -55,9 +56,9 @@ namespace Startup_Manager
             item.SubItems.Add(privs);
             if (wow) item.SubItems.Add("Wow6432");
 
-            Item myItem;
+            ItemTag myItem;
             myItem.name = name;
-            myItem.location = location;
+            myItem.filePath = location;
             myItem.privs = privs;
             myItem.wow = wow;
             item.Tag = myItem;
@@ -98,7 +99,7 @@ namespace Startup_Manager
         {
             foreach (ListViewItem item in listView1.SelectedItems)
             {
-                Item myItem = (Item)item.Tag;
+                ItemTag myItem = (ItemTag)item.Tag;
                 if (myItem.privs == "Current User")
                 {
                     userRunKey.DeleteValue(myItem.name, false);
@@ -116,7 +117,13 @@ namespace Startup_Manager
         {
             foreach (ListViewItem item in listView1.SelectedItems)
             {
-                MessageBox.Show(item.SubItems[1].ToString()); //STUB
+                ItemTag itemTag = (ItemTag)item.Tag;
+                Location location = new Location(itemTag.filePath);
+
+                if (Path.GetDirectoryName(location.GetLocation()) == "")
+                    MessageBox.Show("Relative file paths not yet implemented.");
+                else
+                    System.Diagnostics.Process.Start(@Path.GetDirectoryName(location.GetLocation()));
             }
         }
         private void Add(string name, string location, bool allUsers)
