@@ -118,12 +118,8 @@ namespace Startup_Manager
             foreach (ListViewItem item in listView1.SelectedItems)
             {
                 ItemTag itemTag = (ItemTag)item.Tag;
-                Location location = new Location(itemTag.filePath);
-
-                if (Path.GetDirectoryName(location.GetLocation()) == "")
-                    MessageBox.Show("Relative file paths not yet implemented.");
-                else
-                    System.Diagnostics.Process.Start(@Path.GetDirectoryName(location.GetLocation()));
+                LocationHandler location = new LocationHandler(itemTag.filePath);
+                System.Diagnostics.Process.Start(@Path.GetDirectoryName(location.Location));
             }
         }
         private void Add(string name, string location, bool allUsers)

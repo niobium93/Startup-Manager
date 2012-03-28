@@ -1,24 +1,44 @@
 ﻿using System;
+using System.IO;
 
 namespace Startup_Manager
 {
-    class Location
+    class LocationHandler
     {
-        private string m_location;
-        public Location(string location)
+        public string Location;
+        public LocationHandler(string location)
         {
-            if (location[0] == '"')
+            if (File.Exists(location))
             {
-                m_location = location.Split('"')[1];
+                Location = Path.GetFullPath(location);
+            }
+            else if(File.Exists(location.Split('.')[0] + '.' + location.Split('.')[1].Split(' ')[0]))
+            {
+                Location = Path.GetFullPath(location.Split('.')[0] + '.' + location.Split('.')[1].Split(' ')[0]);
+            }
+            else if (location[0] == '"')
+            {
+                Location = location.Split('"')[1];
             }
             else
             {
-                m_location = location.Split(' ')[0];
+                Location = location.Split(' ')[0];
+            }
+
+            if (Path.GetDirectoryName(Location) == "")
+            {
+                string tmp;
+                string path = Environment.GetEnvironmentVariable("Path");
+                foreach (string loc in path.Split(';'))
+                {
+                    tmp = Path.Combine(loc, Location);
+                    if (File.Exists(tmp))
+                    {
+                        Location = tmp;
+                        break;
+                    }
+                }
             }
         }
-        public string GetLocation()
-        {
-            return m_location;
-        }
     }
-}
+} 
