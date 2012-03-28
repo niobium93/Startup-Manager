@@ -119,7 +119,7 @@ namespace Startup_Manager
             {
                 ItemTag itemTag = (ItemTag)item.Tag;
                 LocationHandler location = new LocationHandler(itemTag.filePath);
-                System.Diagnostics.Process.Start(@Path.GetDirectoryName(location.Location));
+                System.Diagnostics.Process.Start(@"explorer.exe", @"/select," + @location.Location);
             }
         }
         private void Add(string name, string location, bool allUsers)
