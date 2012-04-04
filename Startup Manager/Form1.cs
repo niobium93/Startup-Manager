@@ -15,6 +15,18 @@ namespace Startup_Manager
         {
             InitializeComponent();
             IsUserAdministrator();
+            Load();
+        }
+
+        private void Load()
+        {
+            //Disable buttons before loading entries.
+            addButton.Enabled = false;
+            removeButton.Enabled = false;
+            openLocButton.Enabled = false;
+
+            ///TODO: Empty listView
+
             string[] subKeys;
 
             userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -24,7 +36,7 @@ namespace Startup_Manager
 
             if (isAdmin)
             {
-                if (IntPtr.Size == 8)
+                if (IntPtr.Size == 8) //If running on x64 also load Wow6432 entries.
                 {
                     machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                     subKeys = machineRunKey.GetValueNames();
@@ -38,6 +50,7 @@ namespace Startup_Manager
                     CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users");
             }
 
+            //Enable buttons after loading entries.
             addButton.Enabled = true;
             removeButton.Enabled = true;
             openLocButton.Enabled = true;
@@ -63,7 +76,7 @@ namespace Startup_Manager
             myItem.wow = wow;
             item.Tag = myItem;
 
-            listView1.Items.Add(item);
+            listView.Items.Add(item);
         }
 
         private void IsUserAdministrator()
@@ -97,25 +110,25 @@ namespace Startup_Manager
 
         private void removeButton_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in listView1.SelectedItems)
+            foreach (ListViewItem item in listView.SelectedItems)
             {
                 ItemTag myItem = (ItemTag)item.Tag;
                 if (myItem.privs == "Current User")
                 {
                     userRunKey.DeleteValue(myItem.name, false);
-                    listView1.Items.Remove(item);
+                    listView.Items.Remove(item);
                 }
                 else if (myItem.privs == "All Users")
                 {
                     machineRunKey.DeleteValue(myItem.name, false);
-                    listView1.Items.Remove(item);
+                    listView.Items.Remove(item);
                 }
             }
         }
 
         private void openLocButton_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in listView1.SelectedItems)
+            foreach (ListViewItem item in listView.SelectedItems)
             {
                 ItemTag itemTag = (ItemTag)item.Tag;
                 LocationHandler location = new LocationHandler(itemTag.filePath);
