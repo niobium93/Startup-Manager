@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Security.Principal;
 using System.IO;
+using System.Diagnostics;
 using Microsoft.Win32;
 
 namespace Startup_Manager
@@ -24,6 +25,8 @@ namespace Startup_Manager
             addButton.Enabled = false;
             removeButton.Enabled = false;
             openLocButton.Enabled = false;
+            refreshButton.Enabled = false;
+            elevateButton.Enabled = false;
 
             string[] subKeys;
 
@@ -47,11 +50,19 @@ namespace Startup_Manager
                 foreach (string key in subKeys)
                     CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users");
             }
+            else
+            {
+                ListViewItem item = new ListViewItem("!!!");
+                item.SubItems.Add("To see programs that start for all users elevate to admin access.");
+                listView.Items.Add(item);
+            }
 
             //Enable buttons after loading entries.
             addButton.Enabled = true;
             removeButton.Enabled = true;
             openLocButton.Enabled = true;
+            refreshButton.Enabled = true;
+            if (!isAdmin) elevateButton.Enabled = true;
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -60,19 +71,25 @@ namespace Startup_Manager
             if (isAdmin) machineRunKey.Close();
         }
 
-        private void CreateRow(string name, string location, string privs, bool wow = false)
+        private void CreateRow(string name, string location, string privs, bool wow = false, bool select = false)
         {
             ListViewItem item = new ListViewItem(name);
             item.SubItems.Add(location);
             item.SubItems.Add(privs);
             if (wow) item.SubItems.Add("Wow6432");
 
-            ItemTag myItem;
-            myItem.name = name;
-            myItem.filePath = location;
-            myItem.privs = privs;
-            myItem.wow = wow;
-            item.Tag = myItem;
+            ItemTag tag;
+            tag.name = name;
+            tag.filePath = location;
+            tag.privs = privs;
+            tag.wow = wow;
+            item.Tag = tag;
+
+            if (select)
+            {
+                listView.SelectedItems.Clear();
+                item.Selected = true;
+            }
 
             listView.Items.Add(item);
         }
@@ -138,12 +155,12 @@ namespace Startup_Manager
             if (allUsers)
             {
                 machineRunKey.SetValue(name, location);
-                CreateRow(name, location, "All Users");
+                CreateRow(name, location, "All Users", false, true);
             }
             else
             {
                 userRunKey.SetValue(name, location);
-                CreateRow(name, location, "Current User");
+                CreateRow(name, location, "Current User", false, true);
             }
         }
 
@@ -151,6 +168,27 @@ namespace Startup_Manager
         {
             listView.Items.Clear();
             LoadEntries();
+        }
+
+        private void elevateButton_Click(object sender, EventArgs e) // Restarts current application with admin rights.
+        {
+            ProcessStartInfo proc = new ProcessStartInfo();
+            proc.UseShellExecute = true;
+            proc.WorkingDirectory = Environment.CurrentDirectory;
+            proc.FileName = Application.ExecutablePath;
+            proc.Verb = "runas"; // Makes the application start with admin rights.
+
+            try
+            {
+                Process.Start(proc);
+            }
+            catch
+            {
+                // The user refused the elevation.
+                // Do nothing and return directly.
+                return;
+            }
+            Application.Exit();  // Quit itself
         }
     }
 }

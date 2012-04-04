@@ -38,6 +38,7 @@
             this.removeButton = new System.Windows.Forms.ToolStripButton();
             this.openLocButton = new System.Windows.Forms.ToolStripButton();
             this.refreshButton = new System.Windows.Forms.ToolStripButton();
+            this.elevateButton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,7 +56,7 @@
             this.listView.GridLines = true;
             this.listView.Location = new System.Drawing.Point(12, 28);
             this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(590, 372);
+            this.listView.Size = new System.Drawing.Size(610, 402);
             this.listView.TabIndex = 0;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.View = System.Windows.Forms.View.Details;
@@ -68,7 +69,7 @@
             // locColHeader
             // 
             this.locColHeader.Text = "Location";
-            this.locColHeader.Width = 300;
+            this.locColHeader.Width = 320;
             // 
             // PrivColHeader
             // 
@@ -86,10 +87,11 @@
             this.addButton,
             this.removeButton,
             this.openLocButton,
-            this.refreshButton});
+            this.refreshButton,
+            this.elevateButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(614, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(634, 25);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -133,14 +135,24 @@
             this.refreshButton.Text = "Refresh";
             this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
+            // elevateButton
+            // 
+            this.elevateButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.elevateButton.Image = global::Startup_Manager.Properties.Resources.shield;
+            this.elevateButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.elevateButton.Name = "elevateButton";
+            this.elevateButton.Size = new System.Drawing.Size(23, 22);
+            this.elevateButton.Text = "Elevate";
+            this.elevateButton.Click += new System.EventHandler(this.elevateButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(614, 412);
+            this.ClientSize = new System.Drawing.Size(634, 442);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.listView);
-            this.MinimumSize = new System.Drawing.Size(400, 250);
+            this.MinimumSize = new System.Drawing.Size(350, 250);
             this.Name = "Form1";
             this.Text = "Startup Manager";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
@@ -163,6 +175,7 @@
         private System.Windows.Forms.ToolStripButton removeButton;
         private System.Windows.Forms.ToolStripButton openLocButton;
         private System.Windows.Forms.ToolStripButton refreshButton;
+        private System.Windows.Forms.ToolStripButton elevateButton;
 
 
     }
