@@ -37,6 +37,7 @@
             this.addButton = new System.Windows.Forms.ToolStripButton();
             this.removeButton = new System.Windows.Forms.ToolStripButton();
             this.openLocButton = new System.Windows.Forms.ToolStripButton();
+            this.refreshButton = new System.Windows.Forms.ToolStripButton();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -84,7 +85,8 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addButton,
             this.removeButton,
-            this.openLocButton});
+            this.openLocButton,
+            this.refreshButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(614, 25);
@@ -121,6 +123,16 @@
             this.openLocButton.Text = "Open Location";
             this.openLocButton.Click += new System.EventHandler(this.openLocButton_Click);
             // 
+            // refreshButton
+            // 
+            this.refreshButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.refreshButton.Image = global::Startup_Manager.Properties.Resources.Refresh;
+            this.refreshButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(23, 22);
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -150,6 +162,7 @@
         private System.Windows.Forms.ToolStripButton addButton;
         private System.Windows.Forms.ToolStripButton removeButton;
         private System.Windows.Forms.ToolStripButton openLocButton;
+        private System.Windows.Forms.ToolStripButton refreshButton;
 
 
     }

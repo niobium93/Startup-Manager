@@ -15,17 +15,15 @@ namespace Startup_Manager
         {
             InitializeComponent();
             IsUserAdministrator();
-            Load();
+            LoadEntries();
         }
 
-        private void Load()
+        private void LoadEntries()
         {
             //Disable buttons before loading entries.
             addButton.Enabled = false;
             removeButton.Enabled = false;
             openLocButton.Enabled = false;
-
-            ///TODO: Empty listView
 
             string[] subKeys;
 
@@ -147,6 +145,12 @@ namespace Startup_Manager
                 userRunKey.SetValue(name, location);
                 CreateRow(name, location, "Current User");
             }
+        }
+
+        private void refreshButton_Click(object sender, EventArgs e)
+        {
+            listView.Items.Clear();
+            LoadEntries();
         }
     }
 }
