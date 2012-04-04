@@ -74,6 +74,13 @@ namespace Startup_Manager.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap page_white_edit {
+            get {
+                object obj = ResourceManager.GetObject("page_white_edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap Refresh {
             get {
                 object obj = ResourceManager.GetObject("Refresh", resourceCulture);

@@ -17,6 +17,8 @@ namespace Startup_Manager
             InitializeComponent();
             IsUserAdministrator();
             LoadEntries();
+            if (!isAdmin)
+                elevateLabel.Visible = true;
         }
 
         private void LoadEntries()
@@ -33,7 +35,7 @@ namespace Startup_Manager
             userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             subKeys = userRunKey.GetValueNames();
             foreach (string key in subKeys)
-                CreateRow(key, userRunKey.GetValue(key).ToString(), "Current User");
+                CreateRow(key, userRunKey.GetValue(key).ToString());
 
             if (isAdmin)
             {
@@ -42,19 +44,13 @@ namespace Startup_Manager
                     machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                     subKeys = machineRunKey.GetValueNames();
                     foreach (string key in subKeys)
-                        CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users", true);
+                        CreateRow(key, machineRunKey.GetValue(key).ToString(), true, true);
                     machineRunKey.Close();
                 }
                 machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
                 subKeys = machineRunKey.GetValueNames();
                 foreach (string key in subKeys)
-                    CreateRow(key, machineRunKey.GetValue(key).ToString(), "All Users");
-            }
-            else
-            {
-                ListViewItem item = new ListViewItem("!!!");
-                item.SubItems.Add("To see programs that start for all users elevate to admin access.");
-                listView.Items.Add(item);
+                    CreateRow(key, machineRunKey.GetValue(key).ToString(), true);
             }
 
             //Enable buttons after loading entries.
@@ -71,17 +67,20 @@ namespace Startup_Manager
             if (isAdmin) machineRunKey.Close();
         }
 
-        private void CreateRow(string name, string location, string privs, bool wow = false, bool select = false)
+        private void CreateRow(string name, string location, bool adminRights = false, bool wow = false, bool select = false)
         {
             ListViewItem item = new ListViewItem(name);
             item.SubItems.Add(location);
-            item.SubItems.Add(privs);
+            if(adminRights)
+                item.SubItems.Add("All Users");
+            else
+                item.SubItems.Add("Current User");
             if (wow) item.SubItems.Add("Wow6432");
 
             ItemTag tag;
             tag.name = name;
             tag.filePath = location;
-            tag.privs = privs;
+            tag.adminRights = adminRights;
             tag.wow = wow;
             item.Tag = tag;
 
@@ -119,7 +118,51 @@ namespace Startup_Manager
             dialog.ShowDialog();
             if (dialog.done)
             {
-                Add(dialog.name, dialog.location, dialog.allUsers);
+                if (dialog.m_adminRights)
+                    machineRunKey.SetValue(dialog.m_name, dialog.m_location);
+                else
+                    userRunKey.SetValue(dialog.m_name, dialog.m_location);
+
+                CreateRow(dialog.m_name, dialog.m_location, dialog.m_adminRights, false, true);
+            }
+        }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listView.SelectedItems)
+            {
+                ItemTag tag = (ItemTag)item.Tag;
+                if (tag.wow)
+                    break;
+                AddForm dialog = new AddForm(isAdmin, tag.name, tag.filePath, tag.adminRights);
+                dialog.ShowDialog();
+                if (dialog.done)
+                {
+                    item.SubItems[0].Text = dialog.m_name;
+                    item.SubItems[1].Text = dialog.m_location;
+                    if (dialog.m_adminRights)
+                    {
+                        machineRunKey.DeleteValue(tag.name, false);
+                        machineRunKey.SetValue(dialog.m_name, dialog.m_location);
+                        item.SubItems[2].Text = "All Users";
+                    }
+                    else
+                    {
+                        userRunKey.DeleteValue(tag.name, false);
+                        userRunKey.SetValue(dialog.m_name, dialog.m_location);
+                        item.SubItems[2].Text = "Current User";
+                    }
+                    
+                    //if (wow) item.SubItems[3].Text = "Wow6432";
+
+                    tag.name = dialog.m_name;
+                    tag.filePath = dialog.m_location;
+                    tag.adminRights = dialog.m_adminRights;
+                    //tag.wow = wow;
+
+                    item.Tag = tag;
+                    item.Selected = true;
+                }
             }
         }
 
@@ -127,17 +170,14 @@ namespace Startup_Manager
         {
             foreach (ListViewItem item in listView.SelectedItems)
             {
-                ItemTag myItem = (ItemTag)item.Tag;
-                if (myItem.privs == "Current User")
-                {
-                    userRunKey.DeleteValue(myItem.name, false);
-                    listView.Items.Remove(item);
-                }
-                else if (myItem.privs == "All Users")
-                {
-                    machineRunKey.DeleteValue(myItem.name, false);
-                    listView.Items.Remove(item);
-                }
+                ItemTag tag = (ItemTag)item.Tag;
+
+                if (tag.adminRights)
+                    machineRunKey.DeleteValue(tag.name, false);
+                else
+                    userRunKey.DeleteValue(tag.name, false);
+
+                listView.Items.Remove(item);
             }
         }
 
@@ -148,19 +188,6 @@ namespace Startup_Manager
                 ItemTag itemTag = (ItemTag)item.Tag;
                 LocationHandler location = new LocationHandler(itemTag.filePath);
                 System.Diagnostics.Process.Start(@"explorer.exe", @"/select," + @location.Location);
-            }
-        }
-        private void Add(string name, string location, bool allUsers)
-        {
-            if (allUsers)
-            {
-                machineRunKey.SetValue(name, location);
-                CreateRow(name, location, "All Users", false, true);
-            }
-            else
-            {
-                userRunKey.SetValue(name, location);
-                CreateRow(name, location, "Current User", false, true);
             }
         }
 
@@ -188,7 +215,7 @@ namespace Startup_Manager
                 // Do nothing and return directly.
                 return;
             }
-            Application.Exit();  // Quit itself
+            this.Close();  // Quit itself
         }
     }
 }

@@ -39,6 +39,9 @@
             this.openLocButton = new System.Windows.Forms.ToolStripButton();
             this.refreshButton = new System.Windows.Forms.ToolStripButton();
             this.elevateButton = new System.Windows.Forms.ToolStripButton();
+            this.editButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.elevateLabel = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,9 +89,12 @@
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addButton,
             this.removeButton,
-            this.openLocButton,
+            this.editButton,
+            this.toolStripSeparator1,
             this.refreshButton,
-            this.elevateButton});
+            this.openLocButton,
+            this.elevateButton,
+            this.elevateLabel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(634, 25);
@@ -145,6 +151,28 @@
             this.elevateButton.Text = "Elevate";
             this.elevateButton.Click += new System.EventHandler(this.elevateButton_Click);
             // 
+            // editButton
+            // 
+            this.editButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.editButton.Image = global::Startup_Manager.Properties.Resources.page_white_edit;
+            this.editButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.editButton.Name = "editButton";
+            this.editButton.Size = new System.Drawing.Size(23, 22);
+            this.editButton.Text = "Edit";
+            this.editButton.Click += new System.EventHandler(this.editButton_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // elevateLabel
+            // 
+            this.elevateLabel.Name = "elevateLabel";
+            this.elevateLabel.Size = new System.Drawing.Size(360, 22);
+            this.elevateLabel.Text = "<-- To see programs that start for all users elevate to admin access.";
+            this.elevateLabel.Visible = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -176,6 +204,9 @@
         private System.Windows.Forms.ToolStripButton openLocButton;
         private System.Windows.Forms.ToolStripButton refreshButton;
         private System.Windows.Forms.ToolStripButton elevateButton;
+        private System.Windows.Forms.ToolStripButton editButton;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripLabel elevateLabel;
 
 
     }

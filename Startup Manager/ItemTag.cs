@@ -4,7 +4,7 @@
     {
         public string name;
         public string filePath;
-        public string privs;
+        public bool adminRights;
         public bool wow;
     }
 }

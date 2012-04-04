@@ -6,15 +6,34 @@ namespace Startup_Manager
 {
     public partial class AddForm : Form
     {
-        public string name = "";
-        public string location = "";
-        public bool allUsers = false;
+        public string m_name = "";
+        public string m_location = "";
+        public bool m_adminRights = false;
         public bool done = false;
         public AddForm(bool isAdmin)
         {
             InitializeComponent();
             if (!isAdmin)
                 adminRadioButton.Enabled = false;
+        }
+
+        public AddForm(bool isAdmin, string name, string location, bool adminRights)
+        {
+            InitializeComponent();
+            if (!isAdmin)
+                adminRadioButton.Enabled = false;
+            nameBox.Text = name;
+            locationBox.Text = location.Split('"')[1];
+            if(adminRights)
+            {
+                adminRadioButton.Checked = true;
+                userRadioButton.Checked = false;
+            }
+            else
+            {
+                adminRadioButton.Checked = false;
+                userRadioButton.Checked = true;
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -34,14 +53,14 @@ namespace Startup_Manager
             }
             else if (!File.Exists(locationBox.Text))
             {
-                MessageBox.Show("File specified in location doesn't exist or you don't have rights to access it.");
+                MessageBox.Show("File specified in location either doesn't exist or you don't have rights to access it.");
             }
             else
             {
-                name = nameBox.Text;
-                location = "\"" + locationBox.Text + "\"";
+                m_name = nameBox.Text;
+                m_location = "\"" + locationBox.Text + "\"";
                 if (adminRadioButton.Checked)
-                    allUsers = true;
+                    m_adminRights = true;
                 done = true;
                 this.Close();
             }
