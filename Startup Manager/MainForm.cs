@@ -7,12 +7,12 @@ using Microsoft.Win32;
 
 namespace Startup_Manager
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        private RegistryKey userRunKey;
-        private RegistryKey machineRunKey;
+        private RegistryKey UserRunKey;
+        private RegistryKey MachineRunKey;
         private bool isAdmin;
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             IsUserAdministrator();
@@ -32,25 +32,25 @@ namespace Startup_Manager
 
             string[] subKeys;
 
-            userRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            subKeys = userRunKey.GetValueNames();
+            UserRunKey = Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            subKeys = UserRunKey.GetValueNames();
             foreach (string key in subKeys)
-                CreateRow(key, userRunKey.GetValue(key).ToString());
+                CreateRow(key, UserRunKey.GetValue(key).ToString());
 
             if (isAdmin)
             {
                 if (IntPtr.Size == 8) //If running on x64 also load Wow6432 entries.
                 {
-                    machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                    subKeys = machineRunKey.GetValueNames();
+                    MachineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                    subKeys = MachineRunKey.GetValueNames();
                     foreach (string key in subKeys)
-                        CreateRow(key, machineRunKey.GetValue(key).ToString(), true, true);
-                    machineRunKey.Close();
+                        CreateRow(key, MachineRunKey.GetValue(key).ToString(), true, true);
+                    MachineRunKey.Close();
                 }
-                machineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                subKeys = machineRunKey.GetValueNames();
+                MachineRunKey = Registry.LocalMachine.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                subKeys = MachineRunKey.GetValueNames();
                 foreach (string key in subKeys)
-                    CreateRow(key, machineRunKey.GetValue(key).ToString(), true);
+                    CreateRow(key, MachineRunKey.GetValue(key).ToString(), true);
             }
 
             //Enable buttons after loading entries.
@@ -63,8 +63,8 @@ namespace Startup_Manager
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            userRunKey.Close();
-            if (isAdmin) machineRunKey.Close();
+            UserRunKey.Close();
+            if (isAdmin) MachineRunKey.Close();
         }
 
         private void CreateRow(string name, string location, bool adminRights = false, bool wow = false, bool select = false)
@@ -78,10 +78,10 @@ namespace Startup_Manager
             if (wow) item.SubItems.Add("Wow6432");
 
             ItemTag tag;
-            tag.name = name;
-            tag.filePath = location;
-            tag.adminRights = adminRights;
-            tag.wow = wow;
+            tag.Name = name;
+            tag.FilePath = location;
+            tag.AdminRights = adminRights;
+            tag.Wow = wow;
             item.Tag = tag;
 
             if (select)
@@ -114,16 +114,16 @@ namespace Startup_Manager
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            AddForm dialog = new AddForm(isAdmin);
+            EditForm dialog = new EditForm(isAdmin);
             dialog.ShowDialog();
-            if (dialog.done)
+            if (dialog.isDone)
             {
-                if (dialog.m_adminRights)
-                    machineRunKey.SetValue(dialog.m_name, dialog.m_location);
+                if (dialog.AdminRights)
+                    MachineRunKey.SetValue(dialog.ItemName, dialog.ItemLocation);
                 else
-                    userRunKey.SetValue(dialog.m_name, dialog.m_location);
+                    UserRunKey.SetValue(dialog.ItemName, dialog.ItemLocation);
 
-                CreateRow(dialog.m_name, dialog.m_location, dialog.m_adminRights, false, true);
+                CreateRow(dialog.ItemName, dialog.ItemLocation, dialog.AdminRights, false, true);
             }
         }
 
@@ -132,32 +132,32 @@ namespace Startup_Manager
             foreach (ListViewItem item in listView.SelectedItems)
             {
                 ItemTag tag = (ItemTag)item.Tag;
-                if (tag.wow)
+                if (tag.Wow)
                     break;
-                AddForm dialog = new AddForm(isAdmin, tag.name, tag.filePath, tag.adminRights);
+                EditForm dialog = new EditForm(isAdmin, tag.Name, tag.FilePath, tag.AdminRights);
                 dialog.ShowDialog();
-                if (dialog.done)
+                if (dialog.isDone)
                 {
-                    item.SubItems[0].Text = dialog.m_name;
-                    item.SubItems[1].Text = dialog.m_location;
-                    if (dialog.m_adminRights)
+                    item.SubItems[0].Text = dialog.ItemName;
+                    item.SubItems[1].Text = dialog.ItemLocation;
+                    if (dialog.AdminRights)
                     {
-                        machineRunKey.DeleteValue(tag.name, false);
-                        machineRunKey.SetValue(dialog.m_name, dialog.m_location);
+                        MachineRunKey.DeleteValue(tag.Name, false);
+                        MachineRunKey.SetValue(dialog.ItemName, dialog.ItemLocation);
                         item.SubItems[2].Text = "All Users";
                     }
                     else
                     {
-                        userRunKey.DeleteValue(tag.name, false);
-                        userRunKey.SetValue(dialog.m_name, dialog.m_location);
+                        UserRunKey.DeleteValue(tag.Name, false);
+                        UserRunKey.SetValue(dialog.ItemName, dialog.ItemLocation);
                         item.SubItems[2].Text = "Current User";
                     }
                     
                     //if (wow) item.SubItems[3].Text = "Wow6432";
 
-                    tag.name = dialog.m_name;
-                    tag.filePath = dialog.m_location;
-                    tag.adminRights = dialog.m_adminRights;
+                    tag.Name = dialog.ItemName;
+                    tag.FilePath = dialog.ItemLocation;
+                    tag.AdminRights = dialog.AdminRights;
                     //tag.wow = wow;
 
                     item.Tag = tag;
@@ -172,10 +172,10 @@ namespace Startup_Manager
             {
                 ItemTag tag = (ItemTag)item.Tag;
 
-                if (tag.adminRights)
-                    machineRunKey.DeleteValue(tag.name, false);
+                if (tag.AdminRights)
+                    MachineRunKey.DeleteValue(tag.Name, false);
                 else
-                    userRunKey.DeleteValue(tag.name, false);
+                    UserRunKey.DeleteValue(tag.Name, false);
 
                 listView.Items.Remove(item);
             }
@@ -185,8 +185,8 @@ namespace Startup_Manager
         {
             foreach (ListViewItem item in listView.SelectedItems)
             {
-                ItemTag itemTag = (ItemTag)item.Tag;
-                LocationHandler location = new LocationHandler(itemTag.filePath);
+                ItemTag tag = (ItemTag)item.Tag;
+                LocationHandler location = new LocationHandler(tag.FilePath);
                 System.Diagnostics.Process.Start(@"explorer.exe", @"/select," + @location.Location);
             }
         }

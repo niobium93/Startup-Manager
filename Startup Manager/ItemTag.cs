@@ -2,9 +2,9 @@
 {
     struct ItemTag
     {
-        public string name;
-        public string filePath;
-        public bool adminRights;
-        public bool wow;
+        public string Name;
+        public string FilePath;
+        public bool AdminRights;
+        public bool Wow;
     }
 }

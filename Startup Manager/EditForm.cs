@@ -4,20 +4,20 @@ using System.IO;
 
 namespace Startup_Manager
 {
-    public partial class AddForm : Form
+    public partial class EditForm : Form
     {
-        public string m_name = "";
-        public string m_location = "";
-        public bool m_adminRights = false;
-        public bool done = false;
-        public AddForm(bool isAdmin)
+        public string ItemName = "";
+        public string ItemLocation = "";
+        public bool AdminRights = false;
+        public bool isDone = false;
+        public EditForm(bool isAdmin)
         {
             InitializeComponent();
             if (!isAdmin)
                 adminRadioButton.Enabled = false;
         }
 
-        public AddForm(bool isAdmin, string name, string location, bool adminRights)
+        public EditForm(bool isAdmin, string name, string location, bool adminRights)
         {
             InitializeComponent();
             if (!isAdmin)
@@ -57,11 +57,11 @@ namespace Startup_Manager
             }
             else
             {
-                m_name = nameBox.Text;
-                m_location = "\"" + locationBox.Text + "\"";
+                ItemName = nameBox.Text;
+                ItemLocation = "\"" + locationBox.Text + "\"";
                 if (adminRadioButton.Checked)
-                    m_adminRights = true;
-                done = true;
+                    AdminRights = true;
+                isDone = true;
                 this.Close();
             }
         }

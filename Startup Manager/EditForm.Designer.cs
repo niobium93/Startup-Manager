@@ -1,6 +1,6 @@
 ﻿namespace Startup_Manager
 {
-    partial class AddForm
+    partial class EditForm
     {
         /// <summary>
         /// Required designer variable.
@@ -157,7 +157,7 @@
             this.MaximumSize = new System.Drawing.Size(9999, 138);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(380, 138);
-            this.Name = "AddForm";
+            this.ItemName = "AddForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Add startup item...";
