@@ -9,7 +9,6 @@ namespace Startup_Manager
         public string ItemName = "";
         public string ItemLocation = "";
         public bool AdminRights = false;
-        public bool isDone = false;
         public EditForm(bool isAdmin)
         {
             InitializeComponent();
@@ -22,8 +21,10 @@ namespace Startup_Manager
             InitializeComponent();
             if (!isAdmin)
                 adminRadioButton.Enabled = false;
+
             nameBox.Text = name;
             locationBox.Text = location.Split('"')[1];
+
             if(adminRights)
             {
                 adminRadioButton.Checked = true;
@@ -34,11 +35,8 @@ namespace Startup_Manager
                 adminRadioButton.Checked = false;
                 userRadioButton.Checked = true;
             }
-        }
 
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            this.Close();
+            this.Text = "Edit startup item...";
         }
 
         private void okButton_Click(object sender, EventArgs e)
@@ -61,16 +59,20 @@ namespace Startup_Manager
                 ItemLocation = "\"" + locationBox.Text + "\"";
                 if (adminRadioButton.Checked)
                     AdminRights = true;
-                isDone = true;
-                this.Close();
+
+                this.DialogResult = DialogResult.OK;
             }
         }
 
         private void browseButton_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (File.Exists(locationBox.Text))
             {
-                locationBox.Text = openFileDialog1.FileName;
+                openFileDialog.InitialDirectory = Path.GetDirectoryName(locationBox.Text);
+            }
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                locationBox.Text = openFileDialog.FileName;
             }
         }
     }

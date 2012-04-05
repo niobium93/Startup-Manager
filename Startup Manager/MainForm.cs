@@ -115,8 +115,7 @@ namespace Startup_Manager
         private void addButton_Click(object sender, EventArgs e)
         {
             EditForm dialog = new EditForm(isAdmin);
-            dialog.ShowDialog();
-            if (dialog.isDone)
+            if (dialog.ShowDialog() == DialogResult.OK)
             {
                 if (dialog.AdminRights)
                     MachineRunKey.SetValue(dialog.ItemName, dialog.ItemLocation);
@@ -135,8 +134,7 @@ namespace Startup_Manager
                 if (tag.Wow)
                     break;
                 EditForm dialog = new EditForm(isAdmin, tag.Name, tag.FilePath, tag.AdminRights);
-                dialog.ShowDialog();
-                if (dialog.isDone)
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     item.SubItems[0].Text = dialog.ItemName;
                     item.SubItems[1].Text = dialog.ItemLocation;

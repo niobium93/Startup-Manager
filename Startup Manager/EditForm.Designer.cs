@@ -37,7 +37,7 @@
             this.adminRadioButton = new System.Windows.Forms.RadioButton();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // nameBox
@@ -120,7 +120,6 @@
             this.cancelButton.TabIndex = 6;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // okButton
             // 
@@ -133,11 +132,7 @@
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
-            // openFileDialog1
-            // 
-            this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // AddForm
+            // EditForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,7 +152,7 @@
             this.MaximumSize = new System.Drawing.Size(9999, 138);
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(380, 138);
-            this.ItemName = "AddForm";
+            this.Name = "EditForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "Add startup item...";
@@ -177,6 +172,6 @@
         private System.Windows.Forms.RadioButton adminRadioButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }
