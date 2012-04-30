@@ -70,6 +70,7 @@ namespace Startup_Manager
             if (File.Exists(locationBox.Text))
             {
                 openFileDialog.InitialDirectory = Path.GetDirectoryName(locationBox.Text);
+                openFileDialog.FileName = Path.GetFileName(locationBox.Text);
             }
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
