@@ -23,7 +23,8 @@ namespace Startup_Manager
                 adminRadioButton.Enabled = false;
 
             nameBox.Text = name;
-            locationBox.Text = location.Split('"')[1];
+            LocationHandler locHndlr = new LocationHandler(location);
+            locationBox.Text = locHndlr.Location;
 
             if(adminRights)
             {

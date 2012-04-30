@@ -5,7 +5,7 @@ namespace Startup_Manager
 {
     class LocationHandler
     {
-        public string Location;
+        public string Location { get; private set; }
         public LocationHandler(string location)
         {
             if (File.Exists(location))
